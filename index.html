@@ -2,248 +2,102 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f7eee7">
-<title>Personal Clock & Weather Widget</title>
+<title>Personal Clock &amp; Weather Widget</title>
 <style>
-:root{--page:#f7eee7;--card:#fffaf6;--accent:#b85f3f;--accent2:#c56b43;--ink:#633f32;--muted:#98776a;--line:#ead8cd;--shadow:0 14px 38px rgba(117,68,45,.07)}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:22px 16px;display:grid;place-items:center;background:transparent;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+:root{--page:transparent;--card:#fffaf6;--accent:#b85f3f;--accent2:#c56b43;--ink:#633f32;--muted:#98776a;--line:#ead8cd;--shadow:0 14px 38px rgba(117,68,45,.07)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:22px 16px;display:grid;place-items:center;background:var(--page);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 .dashboard{width:min(100%,760px)}.toolbar{display:flex;justify-content:flex-end;margin-bottom:8px}.settings-toggle,.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 13px;cursor:pointer;font:inherit;font-size:.85rem}
 .settings{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}.settings.open{display:block}.settings h2{font-size:1rem;margin:0 0 12px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px;font-size:.8rem;color:var(--muted)}input,select{width:100%;min-width:0;border:1px solid var(--line);border-radius:9px;background:white;padding:9px;color:#38271f;font:inherit}input[type=color]{height:39px;padding:4px}.settings-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.btn.primary{background:var(--accent);color:white;border-color:var(--accent)}.help{font-size:.75rem;color:var(--muted);line-height:1.45;margin:10px 0 0}
-.welcome{text-align:center;padding:18px 12px 26px}.eyebrow{margin:0 0 14px;color:var(--muted);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase}
-h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.1rem,6vw,3.5rem);font-weight:500;letter-spacing:-.04em;line-height:1.15}.subtitle{margin:14px 0 0;color:var(--muted);font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;font-style:italic}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{min-height:178px;padding:22px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.card-label{margin:0;color:var(--muted);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase}.icon{margin:14px 0 8px;font-size:1.45rem}.analog-clock{position:relative;width:64px;height:64px;margin:16px 0 12px;border:2px solid var(--accent);border-radius:50%;background:var(--card);box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 4px var(--line)}.analog-clock:before{content:"";position:absolute;inset:6px;border-radius:50%;background:repeating-conic-gradient(var(--muted) 0deg 1.5deg,transparent 1.5deg 30deg);-webkit-mask:radial-gradient(circle,transparent 0 78%,#000 80%);mask:radial-gradient(circle,transparent 0 78%,#000 80%)}.hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:99px;background:var(--ink);z-index:2}.hand.hour{width:3px;height:17px}.hand.minute{width:2px;height:23px}.hand.second{width:1px;height:25px;background:var(--accent2)}.clock-pin{position:absolute;z-index:3;width:6px;height:6px;border-radius:50%;background:var(--accent);left:50%;top:50%;transform:translate(-50%,-50%)}.location-note{display:none}.value{margin:0;color:var(--accent2);font-size:clamp(1.65rem,4vw,2.35rem);font-weight:650;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.detail{margin:8px 0 0;color:var(--muted);font-size:.84rem}.footer{text-align:center;margin:18px 0 0;color:var(--muted);font-size:.72rem}
+.welcome{text-align:center;padding:18px 12px 26px}.eyebrow{margin:0 0 14px;color:var(--muted);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase}h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.1rem,6vw,3.5rem);font-weight:500;letter-spacing:-.04em;line-height:1.15}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{min-height:178px;padding:22px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.card-label{margin:0;color:var(--muted);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase}.icon{margin:14px 0 8px;font-size:1.45rem}.analog-clock{position:relative;width:64px;height:64px;margin:16px 0 12px;border:2px solid var(--accent);border-radius:50%;background:var(--card);box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 4px var(--line)}.analog-clock:before{content:"";position:absolute;inset:6px;border-radius:50%;background:repeating-conic-gradient(var(--muted) 0deg 1.5deg,transparent 1.5deg 30deg);-webkit-mask:radial-gradient(circle,transparent 0 78%,#000 80%);mask:radial-gradient(circle,transparent 0 78%,#000 80%)}.hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:99px;background:var(--ink);z-index:2}.hand.hour{width:3px;height:17px}.hand.minute{width:2px;height:23px}.hand.second{width:1px;height:25px;background:var(--accent2)}.clock-pin{position:absolute;z-index:3;width:6px;height:6px;border-radius:50%;background:var(--accent);left:50%;top:50%;transform:translate(-50%,-50%)}.location-note{display:none}.value{margin:0;color:var(--accent2);font-size:clamp(1.65rem,4vw,2.35rem);font-weight:650;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.detail{margin:8px 0 0;color:var(--muted);font-size:.84rem}
 @media(max-width:480px){.cards,.fields{grid-template-columns:1fr}.card{min-height:155px}.welcome{padding-top:8px}}
 </style>
 </head>
 <body>
 <main class="dashboard">
-  <div class="toolbar"><button class="settings-toggle" id="toggleSettings" type="button">Customize ⚙</button></div>
-  <section class="settings" id="settings" aria-label="Widget customization">
-    <h2>Customize your widget</h2>
-    <div class="fields">
-      <label class="field">Your name<input id="nameInput" maxlength="40" placeholder="e.g. Anna"></label>
-      <label class="field">City or town<input id="cityInput" maxlength="80" placeholder="e.g. Bhubaneswar"></label>
-      <label class="field">Greeting language
-        <select id="localeInput"><option value="en-IN">English (India)</option><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option></select>
-      </label>
-      <label class="field">Time format
-        <select id="formatInput"><option value="12">12-hour (AM/PM)</option><option value="24">24-hour</option></select>
-      </label>
-       <label class="field">Background style   <select id="pageModeInput">     <option value="transparent">Transparent</option>     <option value="white">White</option>     <option value="black">Black</option>     <option value="custom">Custom colour</option>   </select> </label> <label class="field">Background colour   <input id="pageInput" type="color" value="#f7eee7"> </label>
-      <label class="field">Card colour<input id="cardInput" type="color" value="#fffaf6"></label>
-      <label class="field">Main accent colour<input id="accentInput" type="color" value="#b85f3f"></label>
-      <label class="field">Clock/temperature colour<input id="accent2Input" type="color" value="#c56b43"></label>
-      <label class="field">Text colour<input id="inkInput" type="color" value="#633f32"></label>
-      <label class="field">Secondary text colour<input id="mutedInput" type="color" value="#98776a"></label>
-    </div>
-    <div class="settings-actions">
-      <button class="btn primary" id="applyBtn" type="button">Apply changes</button>
-      <button class="btn" id="shareBtn" type="button">Copy custom link</button>
-      <button class="btn" id="resetBtn" type="button">Reset</button>
-    </div>
-    <p class="help" id="settingsMessage">Changes apply to this browser. Use “Copy custom link” to create a URL with your chosen settings, then embed that URL in Notion.</p>
-  </section>
-
-  <header class="welcome">
-    <p class="eyebrow" id="today">Loading today's date…</p>
-    <h1 id="greeting">Good day!</h1>
-  </header>
-  <section class="cards" aria-label="Live clock and weather">
-    <article class="card" aria-label="Live time">
-      <p class="card-label">Local time</p> <div class="analog-clock" aria-label="Analog clock">   <span class="hand hour" id="hourHand"></span>   <span class="hand minute" id="minuteHand"></span>   <span class="hand second" id="secondHand"></span>   <span class="clock-pin"></span> </div>
-      <p class="value" id="clock">--:--</p><p class="detail" id="weekday">Updating automatically</p>
-    </article>
-    <article class="card" aria-label="Current weather">
-      <p class="card-label">Current weather</p><div class="icon" id="weatherIcon" aria-hidden="true">☀</div>
-      <p class="value" id="temperature">--°</p><p class="detail" id="conditions">Enter a city in Customize to load weather.</p><p class="detail" id="weatherExtra"></p><p class="location-note" id="weatherLocation">Location not set</p>
-    </article>
-  </section>
-  
+<div class="toolbar"><button class="settings-toggle" id="toggleSettings" type="button">Customize ⚙</button></div>
+<section class="settings" id="settings" aria-label="Widget customization">
+<h2>Customize your widget</h2>
+<div class="fields">
+<label class="field">Your name<input id="nameInput" maxlength="40" placeholder="e.g. Anna"></label>
+<label class="field">City or town<input id="cityInput" maxlength="80" placeholder="e.g. Bhubaneswar"></label>
+<label class="field">Greeting language<select id="localeInput"><option value="en-IN">English (India)</option><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option></select></label>
+<label class="field">Time format<select id="formatInput"><option value="12">12-hour (AM/PM)</option><option value="24">24-hour</option></select></label>
+<label class="field">Background style<select id="pageModeInput"><option value="transparent">Transparent</option><option value="white">White</option><option value="black">Black</option><option value="custom">Custom colour</option></select></label>
+<label class="field">Background colour<input id="pageInput" type="color" value="#f7eee7"></label>
+<label class="field">Card colour<input id="cardInput" type="color" value="#fffaf6"></label>
+<label class="field">Main accent colour<input id="accentInput" type="color" value="#b85f3f"></label>
+<label class="field">Clock/temperature colour<input id="accent2Input" type="color" value="#c56b43"></label>
+<label class="field">Text colour<input id="inkInput" type="color" value="#633f32"></label>
+<label class="field">Secondary text colour<input id="mutedInput" type="color" value="#98776a"></label>
+</div>
+<div class="settings-actions"><button class="btn primary" id="applyBtn" type="button">Apply changes</button><button class="btn" id="shareBtn" type="button">Copy custom link</button><button class="btn" id="resetBtn" type="button">Reset</button></div>
+<p class="help" id="settingsMessage">Changes apply to this browser. Use “Copy custom link” to create a URL with your chosen settings, then embed that URL in Notion.</p>
+</section>
+<header class="welcome"><p class="eyebrow" id="today">Loading today's date…</p><h1 id="greeting">Good day!</h1></header>
+<section class="cards" aria-label="Live clock and weather">
+<article class="card" aria-label="Live time"><p class="card-label">Local time</p><div class="analog-clock" aria-label="Analog clock"><span class="hand hour" id="hourHand"></span><span class="hand minute" id="minuteHand"></span><span class="hand second" id="secondHand"></span><span class="clock-pin"></span></div><p class="value" id="clock">--:--</p><p class="detail" id="weekday">Updating automatically</p></article>
+<article class="card" aria-label="Current weather"><p class="card-label">Current weather</p><div class="icon" id="weatherIcon" aria-hidden="true">☀</div><p class="value" id="temperature">--°</p><p class="detail" id="conditions">Enter a city in Customize to load weather.</p><p class="detail" id="weatherExtra"></p><p class="location-note" id="weatherLocation"></p></article>
+</section>
 </main>
 <script>
-const $ = id => document.getElementById(id);
-const defaults = {name:"",city:"",locale:"en-IN",format:"12",page:"#f7eee7",pageMode:"transparent",card:"#fffaf6",accent:"#b85f3f",accent2:"#c56b43",ink:"#633f32",muted:"#98776a"};
-let config = {...defaults};
-let currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-let currentCoords = null;
-let locationAttempted = false;
-const allowedColors = ["page","card","accent","accent2","ink","muted"];
-function safeColor(v, fallback){return /^#[0-9a-f]{6}$/i.test(v||"")?v:fallback;}
+"use strict";
+const $=id=>document.getElementById(id);
+const defaults={name:"",city:"",locale:"en-IN",format:"12",page:"#f7eee7",pageMode:"transparent",card:"#fffaf6",accent:"#b85f3f",accent2:"#c56b43",ink:"#633f32",muted:"#98776a"};
+let config={...defaults};
+let currentTimeZone=Intl.DateTimeFormat().resolvedOptions().timeZone||"UTC";
+let currentCoords=null,locationAttempted=false,weatherRequestNumber=0;
+const allowedColors=["page","card","accent","accent2","ink","muted"];
+function safeColor(v,fallback){return /^#[0-9a-f]{6}$/i.test(v||"")?v:fallback;}
 function readQuery(){
-  const q = new URLSearchParams(location.search);
-  for(const key of ["name","city","locale","format"]) if(q.has(key)) config[key]=q.get(key);
-  for(const key of allowedColors) if(q.has(key)) config[key]=safeColor(q.get(key),defaults[key]);
-  if(q.has("pageMode") && ["transparent","white","black","custom"].includes(q.get("pageMode"))) {
-  config.pageMode = q.get("pageMode");
-}
-  if(!["12","24"].includes(config.format)) config.format="12";
-  if(!["en-IN","en-US","en-GB"].includes(config.locale)) config.locale="en-IN";
+ const q=new URLSearchParams(location.search);
+ for(const key of ["name","city","locale","format"])if(q.has(key))config[key]=q.get(key);
+ for(const key of allowedColors)if(q.has(key))config[key]=safeColor(q.get(key),defaults[key]);
+ if(q.has("pageMode")&&["transparent","white","black","custom"].includes(q.get("pageMode")))config.pageMode=q.get("pageMode");
+ if(!["12","24"].includes(config.format))config.format=defaults.format;
+ if(!["en-IN","en-US","en-GB"].includes(config.locale))config.locale=defaults.locale;
 }
 function applyTheme(){
-  
-function applyTheme(){
-  const root = document.documentElement;
-
-  let pageBackground = "transparent";
-
-  if(config.pageMode === "white") {
-    pageBackground = "#ffffff";
-  } else if(config.pageMode === "black") {
-    pageBackground = "#000000";
-  } else if(config.pageMode === "custom") {
-    pageBackground = config.page;
-  }
-
-  root.style.setProperty("--page", pageBackground);
-  root.style.setProperty("--card", config.card);
-  root.style.setProperty("--accent", config.accent);
-  root.style.setProperty("--accent2", config.accent2);
-  root.style.setProperty("--ink", config.ink);
-  root.style.setProperty("--muted", config.muted);
-
-  document.body.style.background = pageBackground;
-  document.body.style.color = config.ink;
+ let bg="transparent";
+ if(config.pageMode==="white")bg="#ffffff";
+ else if(config.pageMode==="black")bg="#000000";
+ else if(config.pageMode==="custom")bg=config.page;
+ document.documentElement.style.setProperty("--page",bg);
+ for(const key of ["card","accent","accent2","ink","muted"])document.documentElement.style.setProperty("--"+key,config[key]);
+ document.body.style.background=bg;
+ document.body.style.color=config.ink;
 }
-  
 function fillForm(){
-  $("nameInput").value=config.name;$("cityInput").value=config.city;
-  
-$("localeInput").value=config.locale;$("formatInput").value=config.format;
-$("pageModeInput").value=config.pageMode;
-for(const key of allowedColors) $(key+"Input").value=config[key];
+ $("nameInput").value=config.name;$("cityInput").value=config.city;
+ $("localeInput").value=config.locale;$("formatInput").value=config.format;
+ $("pageModeInput").value=config.pageMode;
+ for(const key of allowedColors)$(key+"Input").value=config[key];
 }
 function getForm(){
-  config.name=$("nameInput").value.trim().slice(0,40);
-  config.city=$("cityInput").value.trim().slice(0,80);
-  
-config.locale=$("localeInput").value;config.format=$("formatInput").value;
-config.pageMode=$("pageModeInput").value;
-for(const key of allowedColors) config[key]=safeColor($(key+"Input").value,defaults[key]);
+ config.name=$("nameInput").value.trim().slice(0,40);
+ config.city=$("cityInput").value.trim().slice(0,80);
+ config.locale=$("localeInput").value;config.format=$("formatInput").value;
+ config.pageMode=$("pageModeInput").value;
+ for(const key of allowedColors)config[key]=safeColor($(key+"Input").value,defaults[key]);
 }
 function updateClock(){
-  const now=new Date();
-  const hour=Number(new Intl.DateTimeFormat("en-US",{hour:"2-digit",hourCycle:"h23",timeZone:currentTimeZone}).format(now));
-  let greeting=hour>=5&&hour<12?"Good Morning":hour>=12&&hour<17?"Good Afternoon":hour>=17&&hour<21?"Good Evening":"Good Night";
-  $("greeting").textContent=config.name?`${greeting}, ${config.name}.`:`${greeting}.`;
-  $("clock").textContent=new Intl.DateTimeFormat(config.locale,{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:config.format==="12",timeZone:currentTimeZone}).format(now);
-  const parts=new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23",timeZone:currentTimeZone}).formatToParts(now);
-  const part=type=>Number(parts.find(p=>p.type===type)?.value||0);
-  const seconds=part("second"), minutes=part("minute"), hours=part("hour")%12;
-  $("hourHand").style.transform=`translateX(-50%) rotate(${hours*30+minutes*.5}deg)`;
-  $("minuteHand").style.transform=`translateX(-50%) rotate(${minutes*6+seconds*.1}deg)`;
-  $("secondHand").style.transform=`translateX(-50%) rotate(${seconds*6}deg)`;
-  $("today").textContent=new Intl.DateTimeFormat(config.locale,{weekday:"long",month:"long",day:"numeric",year:"numeric",timeZone:currentTimeZone}).format(now);
-  $("weekday").textContent=new Intl.DateTimeFormat(config.locale,{weekday:"long",timeZone:currentTimeZone}).format(now);
+ const now=new Date();
+ const hour=Number(new Intl.DateTimeFormat("en-US",{hour:"2-digit",hourCycle:"h23",timeZone:currentTimeZone}).format(now));
+ let greeting=hour>=5&&hour<12?"Good Morning":hour>=12&&hour<17?"Good Afternoon":hour>=17&&hour<21?"Good Evening":"Good Night";
+ $("greeting").textContent=config.name?`${greeting}, ${config.name}.`:`${greeting}.`;
+ $("clock").textContent=new Intl.DateTimeFormat(config.locale,{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:config.format==="12",timeZone:currentTimeZone}).format(now);
+ const parts=new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23",timeZone:currentTimeZone}).formatToParts(now);
+ const part=t=>Number(parts.find(p=>p.type===t)?.value||0);
+ const s=part("second"),m=part("minute"),h=part("hour")%12;
+ $("hourHand").style.transform=`translateX(-50%) rotate(${h*30+m*.5}deg)`;
+ $("minuteHand").style.transform=`translateX(-50%) rotate(${m*6+s*.1}deg)`;
+ $("secondHand").style.transform=`translateX(-50%) rotate(${s*6}deg)`;
+ $("today").textContent=new Intl.DateTimeFormat(config.locale,{weekday:"long",month:"long",day:"numeric",year:"numeric",timeZone:currentTimeZone}).format(now);
+ $("weekday").textContent=new Intl.DateTimeFormat(config.locale,{weekday:"long",timeZone:currentTimeZone}).format(now);
 }
-function applyConfig(){
-  applyTheme();updateClock();$("weatherLocation").textContent=config.city||"Your weather, wherever you are.";
-}
-
-async function updateWeather(){
-  // If no city was entered, try to use the visitor's location.
-  if (!config.city && !currentCoords) {
-    if (locationAttempted) return;
-    locationAttempted = true;
-
-    if (!navigator.geolocation) {
-      $("conditions").textContent =
-        "Open Customize and enter a city to show local weather.";
-      $("weatherExtra").textContent = "";
-      return;
-    }
-
-    $("conditions").textContent = "Requesting location permission…";
-    $("weatherExtra").textContent = "";
-
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        currentCoords = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        };
-        updateWeather();
-      },
-      () => {
-        $("conditions").textContent =
-          "Allow location access, or enter a city in Customize.";
-        $("weatherExtra").textContent =
-          "Your location is not displayed.";
-      },
-      {
-        enableHighAccuracy: false,
-        timeout: 10000,
-        maximumAge: 900000
-      }
-    );
-    return;
-  }
-
-  $("conditions").textContent = "Loading local weather…";
-
-  try {
-    let latitude;
-    let longitude;
-    let timezone = "auto";
-
-    if (currentCoords) {
-      // Use coordinates directly; no city lookup is needed.
-      latitude = currentCoords.latitude;
-      longitude = currentCoords.longitude;
-    } else {
-      // Fallback if the visitor enters a city manually.
-      const geo = await fetch(
-        "https://geocoding-api.open-meteo.com/v1/search?name=" +
-        encodeURIComponent(config.city) +
-        "&count=1&language=en&format=json"
-      );
-
-      if (!geo.ok) throw Error();
-
-      const gd = await geo.json();
-      if (!gd.results?.length) throw Error("City not found");
-
-      const place = gd.results[0];
-      latitude = place.latitude;
-      longitude = place.longitude;
-      timezone = place.timezone || "auto";
-    }
-
-    const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}` +
-      `&longitude=${longitude}` +
-      `&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m` +
-      `&timezone=${encodeURIComponent(timezone)}`;
-
-    const response = await fetch(url);
-    if (!response.ok) throw Error();
-
-    const data = await response.json();
-    const c = data.current;
-    const w = describeWeather(c.weather_code, c.is_day === 1);
-
-    if (data.timezone) {
-      currentTimeZone = data.timezone;
-      updateClock();
-    }
-
-    $("temperature").textContent =
-      Math.round(c.temperature_2m) + "°C";
-    $("weatherIcon").textContent = w.icon;
-    $("conditions").textContent = w.label;
-    $("weatherExtra").textContent =
-      `Feels ${Math.round(c.apparent_temperature)}° · ` +
-      `Humidity ${c.relative_humidity_2m}% · ` +
-      `Wind ${Math.round(c.wind_speed_10m)} km/h`;
-
-    // Never display the visitor's city or coordinates.
-    $("weatherLocation").textContent = "";
-  } catch (e) {
-    $("conditions").textContent = "Could not load local weather.";
-    $("weatherExtra").textContent =
-      "Check your connection or enter a city in Customize.";
-  }
-}
+function applyConfig(){applyTheme();updateClock();}
 function describeWeather(code,day){
  if(code===0)return{icon:day?"☀":"☾",label:"Clear sky"};
  if([1,2].includes(code))return{icon:day?"🌤":"☁",label:"Mostly clear"};
@@ -255,19 +109,68 @@ function describeWeather(code,day){
  if([95,96,99].includes(code))return{icon:"⛈",label:"Thunderstorm"};
  return{icon:"🌤",label:"Current conditions"};
 }
+async function updateWeather(){
+ const requestId=++weatherRequestNumber;
+ if(!config.city&&!currentCoords){
+  if(locationAttempted)return;
+  locationAttempted=true;
+  if(!navigator.geolocation){$("conditions").textContent="Enter a city in Customize to load weather.";return;}
+  $("conditions").textContent="Requesting location permission…";
+  navigator.geolocation.getCurrentPosition(pos=>{currentCoords={latitude:pos.coords.latitude,longitude:pos.coords.longitude};updateWeather();},()=>{
+   $("conditions").textContent="Enter a city in Customize to load weather.";
+   $("weatherExtra").textContent="Location access may be blocked in embedded pages.";
+  },{enableHighAccuracy:false,timeout:10000,maximumAge:900000});
+  return;
+ }
+ $("conditions").textContent="Loading local weather…";$("weatherExtra").textContent="";
+ try{
+  let lat,lon,tz="auto";
+  if(config.city){
+   const gr=await fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(config.city)+"&count=1&language=en&format=json");
+   if(!gr.ok)throw Error("Geocoding failed");
+   const gd=await gr.json();
+   if(!gd.results?.length)throw Error("City not found");
+   lat=gd.results[0].latitude;lon=gd.results[0].longitude;tz=gd.results[0].timezone||"auto";
+  }else{lat=currentCoords.latitude;lon=currentCoords.longitude;}
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m&timezone=${encodeURIComponent(tz)}`;
+  const r=await fetch(url);if(!r.ok)throw Error("Weather failed");
+  const data=await r.json();if(requestId!==weatherRequestNumber)return;
+  const c=data.current;if(!c)throw Error("No current data");
+  const w=describeWeather(c.weather_code,c.is_day===1);
+  if(data.timezone){currentTimeZone=data.timezone;updateClock();}
+  $("temperature").textContent=Math.round(c.temperature_2m)+"°C";
+  $("weatherIcon").textContent=w.icon;$("conditions").textContent=w.label;
+  $("weatherExtra").textContent=`Feels ${Math.round(c.apparent_temperature)}° · Humidity ${c.relative_humidity_2m}% · Wind ${Math.round(c.wind_speed_10m)} km/h`;
+  $("weatherLocation").textContent="";
+ }catch(e){
+  if(requestId!==weatherRequestNumber)return;
+  $("conditions").textContent="Could not load local weather.";
+  $("weatherExtra").textContent="Check your connection and city name, then try again.";
+ }
+}
 $("toggleSettings").addEventListener("click",()=>$("settings").classList.toggle("open"));
-$("applyBtn").addEventListener("click",()=>{getForm();applyConfig();updateWeather();$("settingsMessage").textContent="Applied! These settings affect this browser. Copy a custom link if you want to embed this exact setup in Notion.";});
-$("resetBtn").addEventListener("click",()=>{config={...defaults};fillForm();applyConfig();updateWeather();$("settingsMessage").textContent="Reset to the default theme. Add your own name and city whenever you're ready.";});
+$("applyBtn").addEventListener("click",()=>{
+ getForm();currentCoords=null;locationAttempted=false;applyConfig();updateWeather();
+ $("settingsMessage").textContent="Applied! Your city stays hidden on the dashboard. Copy a custom link to use these settings in Notion.";
+});
+$("resetBtn").addEventListener("click",()=>{
+ config={...defaults};currentCoords=null;locationAttempted=false;fillForm();applyConfig();updateWeather();
+ $("settingsMessage").textContent="Reset to the default theme. Add your name and city whenever you're ready.";
+});
 $("shareBtn").addEventListener("click",async()=>{
  getForm();applyConfig();
  const url=new URL(location.href);url.search="";
-for(const [k,v] of Object.entries(config)) {
-  if(k !== "city" && v) url.searchParams.set(k,v);
-}
-try{await navigator.clipboard.writeText(url.toString());$("settingsMessage").textContent="Custom link copied. Open it to preview your settings, or paste it into Notion using /embed.";}
- catch(e){$("settingsMessage").textContent="Copy this custom link from your browser's address bar after applying settings: "+url.toString();}
+ // City is included in the link so weather works in Notion when iframe geolocation is blocked.
+ for(const [k,v] of Object.entries(config))if(v!=="")url.searchParams.set(k,v);
+ try{
+  await navigator.clipboard.writeText(url.toString());
+  $("settingsMessage").textContent="Custom link copied. Paste it into Notion using /embed. The city is in the link but is not displayed on the dashboard.";
+ }catch(e){
+  $("settingsMessage").textContent="Clipboard access was blocked. Copy this link: "+url.toString();
+ }
 });
-readQuery();fillForm();applyConfig();updateWeather();setInterval(updateClock,1000);setInterval(updateWeather,15*60*1000);
+readQuery();fillForm();applyConfig();updateWeather();
+setInterval(updateClock,1000);setInterval(updateWeather,15*60*1000);
 </script>
 </body>
 </html>
