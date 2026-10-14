@@ -30,3 +30,4 @@ The widget is universal. Each person can use the Customize panel to preview thei
 - The widget does not require a user account or store private credentials.
 - GitHub Pages content and URL parameters are public to anyone who has the URL. Do not include sensitive information.
 - If a city is entered, the widget uses that city's timezone for both the clock/date and weather. If no city is entered, the clock uses the viewer's device timezone.
+<!-- Trigger a fresh Pages build -->
