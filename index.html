@@ -12,7 +12,7 @@
 .settings{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}.settings.open{display:block}.settings h2{font-size:1rem;margin:0 0 12px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px;font-size:.8rem;color:var(--muted)}input,select{width:100%;min-width:0;border:1px solid var(--line);border-radius:9px;background:white;padding:9px;color:#38271f;font:inherit}input[type=color]{height:39px;padding:4px}.settings-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.btn.primary{background:var(--accent);color:white;border-color:var(--accent)}.help{font-size:.75rem;color:var(--muted);line-height:1.45;margin:10px 0 0}
 .welcome{text-align:center;padding:18px 12px 26px}.eyebrow{margin:0 0 14px;color:var(--muted);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase}
 h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.1rem,6vw,3.5rem);font-weight:500;letter-spacing:-.04em;line-height:1.15}.subtitle{margin:14px 0 0;color:var(--muted);font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;font-style:italic}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{min-height:178px;padding:22px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.card-label{margin:0;color:var(--muted);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase}.icon{margin:14px 0 8px;font-size:1.45rem}.analog-clock{position:relative;width:64px;height:64px;margin:16px 0 12px;border:2px solid var(--accent);border-radius:50%;background:var(--card);box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 4px var(--line)}.analog-clock:before{content:"";position:absolute;inset:6px;border-radius:50%;background:repeating-conic-gradient(var(--muted) 0deg 1.5deg,transparent 1.5deg 30deg);-webkit-mask:radial-gradient(circle,transparent 0 78%,#000 80%);mask:radial-gradient(circle,transparent 0 78%,#000 80%)}.hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:99px;background:var(--ink);z-index:2}.hand.hour{width:3px;height:17px}.hand.minute{width:2px;height:23px}.hand.second{width:1px;height:25px;background:var(--accent2)}.clock-pin{position:absolute;z-index:3;width:6px;height:6px;border-radius:50%;background:var(--accent);left:50%;top:50%;transform:translate(-50%,-50%)}.location-note{display:none}.value{margin:0;color:var(--accent2);font-size:clamp(1.65rem,4vw,2.35rem);font-weight:650;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.detail{margin:8px 0 0;color:var(--muted);font-size:.84rem}.footer{text-align:center;margin:18px 0 0;color:var(--muted);font-size:.72rem}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{min-height:178px;padding:22px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.card-label{margin:0;color:var(--muted);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase}.icon{margin:14px 0 8px;font-size:1.45rem}.analog-clock{position:relative;width:64px;height:64px;margin:16px 0 12px;border:2px solid var(--accent);border-radius:50%;background:var(--card);box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 4px var(--line)}.analog-clock:before{content:"";position:absolute;inset:6px;border-radius:50%;background:repeating-conic-gradient(var(--muted) 0deg 1.5deg,transparent 1.5deg 30deg);-webkit-mask:radial-gradient(circle,transparent 0 78%,#000 80%);mask:radial-gradient(circle,transparent 0 78%,#000 80%)}.hand{position:absolute;left:50%;bottom:50%;transform-origin:50% 100%;border-radius:99px;background:var(--ink);z-index:2}.hand.hour{width:3px;height:17px}.hand.minute{width:2px;height:23px}.hand.second{width:1px;height:25px;background:var(--accent2)}.clock-pin{position:absolute;z-index:3;width:6px;height:6px;border-radius:50%;background:var(--accent);left:50%;top:50%;transform:translate(-50%,-50%)}.location-note{display:none}display:none}.value{margin:0;color:var(--accent2);font-size:clamp(1.65rem,4vw,2.35rem);font-weight:650;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.detail{margin:8px 0 0;color:var(--muted);font-size:.84rem}.footer{text-align:center;margin:18px 0 0;color:var(--muted);font-size:.72rem}
 @media(max-width:480px){.cards,.fields{grid-template-columns:1fr}.card{min-height:155px}.welcome{padding-top:8px}}
 </style>
 </head>
@@ -67,6 +67,8 @@ const $ = id => document.getElementById(id);
 const defaults = {name:"",city:"",locale:"en-IN",format:"12",page:"#f7eee7",card:"#fffaf6",accent:"#b85f3f",accent2:"#c56b43",ink:"#633f32",muted:"#98776a"};
 let config = {...defaults};
 let currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+let currentCoords = null;
+let locationAttempted = false;
 const allowedColors = ["page","card","accent","accent2","ink","muted"];
 function safeColor(v, fallback){return /^#[0-9a-f]{6}$/i.test(v||"")?v:fallback;}
 function readQuery(){
@@ -112,22 +114,110 @@ function updateClock(){
 function applyConfig(){
   applyTheme();updateClock();$("weatherLocation").textContent=config.city||"Your weather, wherever you are.";
 }
+
 async function updateWeather(){
-  if(!config.city){$("conditions").textContent="Open Customize and enter a city to show local weather.";$("weatherExtra").textContent="";return;}
-  $("conditions").textContent="Finding your city…";
-  try{
-    const geo=await fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(config.city)+"&count=1&language=en&format=json");
-    if(!geo.ok) throw Error();
-    const gd=await geo.json();if(!gd.results?.length) throw Error("City not found");
-    const place=gd.results[0];const tz=place.timezone||"auto";
-    if(place.timezone){currentTimeZone=place.timezone;updateClock();}
-    $("weatherLocation").textContent=[place.name,place.admin1,place.country].filter(Boolean).join(", ");
-    const url=`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m&timezone=${encodeURIComponent(tz)}`;
-    const response=await fetch(url);if(!response.ok)throw Error();
-    const data=await response.json(), c=data.current, w=describeWeather(c.weather_code,c.is_day===1);
-    $("temperature").textContent=Math.round(c.temperature_2m)+"°C";$("weatherIcon").textContent=w.icon;$("conditions").textContent=w.label;
-    $("weatherExtra").textContent=`Feels ${Math.round(c.apparent_temperature)}° · Humidity ${c.relative_humidity_2m}% · Wind ${Math.round(c.wind_speed_10m)} km/h`;
-  }catch(e){$("conditions").textContent="Could not find that city or load weather.";$("weatherExtra").textContent="Try a nearby larger city and check your connection.";}
+  // If no city was entered, try to use the visitor's location.
+  if (!config.city && !currentCoords) {
+    if (locationAttempted) return;
+    locationAttempted = true;
+
+    if (!navigator.geolocation) {
+      $("conditions").textContent =
+        "Open Customize and enter a city to show local weather.";
+      $("weatherExtra").textContent = "";
+      return;
+    }
+
+    $("conditions").textContent = "Requesting location permission…";
+    $("weatherExtra").textContent = "";
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        currentCoords = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
+        updateWeather();
+      },
+      () => {
+        $("conditions").textContent =
+          "Allow location access, or enter a city in Customize.";
+        $("weatherExtra").textContent =
+          "Your location is not displayed.";
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 10000,
+        maximumAge: 900000
+      }
+    );
+    return;
+  }
+
+  $("conditions").textContent = "Loading local weather…";
+
+  try {
+    let latitude;
+    let longitude;
+    let timezone = "auto";
+
+    if (currentCoords) {
+      // Use coordinates directly; no city lookup is needed.
+      latitude = currentCoords.latitude;
+      longitude = currentCoords.longitude;
+    } else {
+      // Fallback if the visitor enters a city manually.
+      const geo = await fetch(
+        "https://geocoding-api.open-meteo.com/v1/search?name=" +
+        encodeURIComponent(config.city) +
+        "&count=1&language=en&format=json"
+      );
+
+      if (!geo.ok) throw Error();
+
+      const gd = await geo.json();
+      if (!gd.results?.length) throw Error("City not found");
+
+      const place = gd.results[0];
+      latitude = place.latitude;
+      longitude = place.longitude;
+      timezone = place.timezone || "auto";
+    }
+
+    const url =
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}` +
+      `&longitude=${longitude}` +
+      `&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m` +
+      `&timezone=${encodeURIComponent(timezone)}`;
+
+    const response = await fetch(url);
+    if (!response.ok) throw Error();
+
+    const data = await response.json();
+    const c = data.current;
+    const w = describeWeather(c.weather_code, c.is_day === 1);
+
+    if (data.timezone) {
+      currentTimeZone = data.timezone;
+      updateClock();
+    }
+
+    $("temperature").textContent =
+      Math.round(c.temperature_2m) + "°C";
+    $("weatherIcon").textContent = w.icon;
+    $("conditions").textContent = w.label;
+    $("weatherExtra").textContent =
+      `Feels ${Math.round(c.apparent_temperature)}° · ` +
+      `Humidity ${c.relative_humidity_2m}% · ` +
+      `Wind ${Math.round(c.wind_speed_10m)} km/h`;
+
+    // Never display the visitor's city or coordinates.
+    $("weatherLocation").textContent = "";
+  } catch (e) {
+    $("conditions").textContent = "Could not load local weather.";
+    $("weatherExtra").textContent =
+      "Check your connection or enter a city in Customize.";
+  }
 }
 function describeWeather(code,day){
  if(code===0)return{icon:day?"☀":"☾",label:"Clear sky"};
@@ -146,8 +236,10 @@ $("resetBtn").addEventListener("click",()=>{config={...defaults};fillForm();appl
 $("shareBtn").addEventListener("click",async()=>{
  getForm();applyConfig();
  const url=new URL(location.href);url.search="";
- for(const [k,v] of Object.entries(config)) if(v) url.searchParams.set(k,v);
- try{await navigator.clipboard.writeText(url.toString());$("settingsMessage").textContent="Custom link copied. Open it to preview your settings, or paste it into Notion using /embed.";}
+for(const [k,v] of Object.entries(config)) {
+  if(k !== "city" && v) url.searchParams.set(k,v);
+}
+try{await navigator.clipboard.writeText(url.toString());$("settingsMessage").textContent="Custom link copied. Open it to preview your settings, or paste it into Notion using /embed.";}
  catch(e){$("settingsMessage").textContent="Copy this custom link from your browser's address bar after applying settings: "+url.toString();}
 });
 readQuery();fillForm();applyConfig();updateWeather();setInterval(updateClock,1000);setInterval(updateWeather,15*60*1000);
