@@ -30,7 +30,7 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
       <label class="field">Time format
         <select id="formatInput"><option value="12">12-hour (AM/PM)</option><option value="24">24-hour</option></select>
       </label>
-      <label class="field">Background colour<input id="pageInput" type="color" value="#f7eee7"></label>
+       <label class="field">Background style   <select id="pageModeInput">     <option value="transparent">Transparent</option>     <option value="white">White</option>     <option value="black">Black</option>     <option value="custom">Custom colour</option>   </select> </label> <label class="field">Background colour   <input id="pageInput" type="color" value="#f7eee7"> </label>
       <label class="field">Card colour<input id="cardInput" type="color" value="#fffaf6"></label>
       <label class="field">Main accent colour<input id="accentInput" type="color" value="#b85f3f"></label>
       <label class="field">Clock/temperature colour<input id="accent2Input" type="color" value="#c56b43"></label>
@@ -63,7 +63,7 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
 </main>
 <script>
 const $ = id => document.getElementById(id);
-const defaults = {name:"",city:"",locale:"en-IN",format:"12",page:"#f7eee7",card:"#fffaf6",accent:"#b85f3f",accent2:"#c56b43",ink:"#633f32",muted:"#98776a"};
+const defaults = {name:"",city:"",locale:"en-IN",format:"12",page:"#f7eee7",pageMode:"transparent",card:"#fffaf6",accent:"#b85f3f",accent2:"#c56b43",ink:"#633f32",muted:"#98776a"};
 let config = {...defaults};
 let currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 let currentCoords = null;
@@ -74,6 +74,9 @@ function readQuery(){
   const q = new URLSearchParams(location.search);
   for(const key of ["name","city","locale","format"]) if(q.has(key)) config[key]=q.get(key);
   for(const key of allowedColors) if(q.has(key)) config[key]=safeColor(q.get(key),defaults[key]);
+  if(q.has("pageMode") && ["transparent","white","black","custom"].includes(q.get("pageMode"))) {
+  config.pageMode = q.get("pageMode");
+}
   if(!["12","24"].includes(config.format)) config.format="12";
   if(!["en-IN","en-US","en-GB"].includes(config.locale)) config.locale="en-IN";
 }
