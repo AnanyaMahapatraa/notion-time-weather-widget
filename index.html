@@ -9,7 +9,43 @@
 :root{--page:transparent;--card:#fffaf6;--accent:#b85f3f;--accent2:#c56b43;--ink:#633f32;--muted:#98776a;--line:#ead8cd;--shadow:0 14px 38px rgba(117,68,45,.07)}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;padding:22px 16px;display:grid;place-items:center;background:var(--page);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.dashboard{width:min(100%,760px)}
+.dashboard{width:min(100%,760px);position:relative;z-index:1}
+/* Gentle seasonal leaves drifting behind the dashboard */
+.leaf-layer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;opacity:.62}
+.leaf{position:absolute;top:-40px;width:13px;height:20px;border-radius:100% 0 100% 0;background:#c78a62;opacity:0;animation:leaf-fall linear infinite;filter:drop-shadow(0 1px 1px rgba(99,63,50,.08))}
+.leaf:nth-child(1){left:8%;animation-duration:17s;animation-delay:-8s;transform:scale(.75)}
+.leaf:nth-child(2){left:22%;animation-duration:21s;animation-delay:-15s;background:#d9ad7b;transform:scale(.65)}
+.leaf:nth-child(3){left:39%;animation-duration:19s;animation-delay:-4s;background:#b96c4b;transform:scale(.85)}
+.leaf:nth-child(4){left:61%;animation-duration:23s;animation-delay:-18s;background:#d7b18a;transform:scale(.7)}
+.leaf:nth-child(5){left:78%;animation-duration:18s;animation-delay:-11s;background:#bf8056;transform:scale(.9)}
+.leaf:nth-child(6){left:92%;animation-duration:22s;animation-delay:-2s;background:#d9ad7b;transform:scale(.6)}
+@keyframes leaf-fall{0%{opacity:0;translate:0 -3vh;rotate:0deg}8%{opacity:.58}50%{translate:34px 52vh;rotate:180deg}92%{opacity:.45}100%{translate:-22px 110vh;rotate:340deg;opacity:0}}
+.welcome{text-align:center;padding:12px 12px 26px;display:flex;flex-direction:column;align-items:center}
+.eyebrow{margin:0 0 14px;color:var(--muted);font-size:clamp(1rem,2.6vw,1.16rem);letter-spacing:.035em;text-transform:none;font-weight:550}
+.greeting-line{display:flex;align-items:center;justify-content:center;gap:11px;max-width:100%}
+.owl-art{width:clamp(48px,8vw,66px);height:clamp(48px,8vw,66px);flex:0 0 auto;color:var(--accent);overflow:visible}
+.owl-art .owl-line{fill:var(--card);stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.owl-art .owl-detail{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.owl-art .owl-eye{fill:var(--card);stroke:var(--ink);stroke-width:1.8}
+.owl-art .owl-pupil{fill:var(--ink)}
+.owl-art .owl-book{fill:#f0d9bd;stroke:var(--accent);stroke-width:1.8;stroke-linejoin:round}
+.owl-art .prop-line{fill:var(--card);stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.owl-art .prop-detail{fill:none;stroke:var(--accent);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.owl-art .evening-book,.owl-art .coffee-prop,.owl-art .laptop-prop,.owl-art .sleep-z{display:none}
+.owl-art .sleep-eyes,.owl-art .happy-eyes,.owl-art .cozy-props{display:none}
+.mood-morning .owl-art .normal-eyes{display:none}
+.mood-morning .owl-art .happy-eyes{display:inline}
+.mood-night .owl-art .normal-eyes{display:none}
+.mood-night .owl-art .sleep-eyes{display:inline}
+.mood-morning .owl-art .coffee-prop{display:inline}
+.mood-afternoon .owl-art .laptop-prop{display:inline}
+.mood-evening .owl-art .evening-book,.mood-evening .owl-art .cozy-props{display:inline}
+.mood-night .owl-art .sleep-z{display:inline;animation:zzz-float 2.8s ease-in-out infinite}
+.mood-morning .owl-art .owl-brow{stroke-width:2.6}
+@keyframes zzz-float{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(-2px);opacity:1}}
+@media(prefers-reduced-motion:reduce){.owl-art .sleep-z{animation:none}}
+.greeting-line h1{font-size:clamp(1.9rem,5.5vw,3.35rem)}
+@media(prefers-reduced-motion:reduce){.leaf{animation:none;display:none}}
 .toolbar{display:flex;justify-content:center;margin:0 0 8px}
 .settings-toggle,.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 13px;cursor:pointer;font:inherit;font-size:.85rem}
 .settings-toggle{width:38px;height:38px;padding:0;display:grid;place-items:center;background:#fffaf0;border-color:#eadcc6;color:#80644b;font-size:1.15rem;line-height:1;box-shadow:0 3px 10px rgba(117,68,45,.06)}
@@ -25,8 +61,6 @@ input[type=color]{height:39px;padding:4px}
 .settings-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
 .btn.primary{background:var(--accent);color:white;border-color:var(--accent)}
 .help{font-size:.75rem;color:var(--muted);line-height:1.45;margin:10px 0 0;overflow-wrap:anywhere}
-.welcome{text-align:center;padding:18px 12px 26px}
-.eyebrow{margin:0 0 14px;color:var(--muted);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase}
 h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.1rem,6vw,3.5rem);font-weight:500;letter-spacing:-.04em;line-height:1.15}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .card{min-height:178px;padding:22px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
@@ -44,6 +78,7 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
 </style>
 </head>
 <body>
+<div class="leaf-layer" aria-hidden="true"><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span></div>
 <main class="dashboard">
   <div class="toolbar"><button class="settings-toggle" id="toggleSettings" type="button" aria-label="Open widget settings" title="Widget settings">⚙</button></div>
   <section class="settings" id="settings" aria-label="Widget customization">
@@ -68,7 +103,27 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
     </div>
     <p class="help" id="settingsMessage">Choose a city once, apply your settings, then copy a custom link to embed this setup in Notion. This widget will not request GPS permission.</p>
   </section>
-  <header class="welcome"><p class="eyebrow" id="today">Loading today's date…</p><h1 id="greeting">Good day!</h1></header>
+  <header class="welcome" id="welcome">
+    <p class="eyebrow" id="today">Loading today's date…</p>
+    <div class="greeting-line">
+      <svg class="owl-art" id="owlArt" viewBox="0 0 72 72" role="img" aria-label="A little bookish owl">
+        <path class="owl-line" d="M17 25 13 12 27 19 Q36 14 45 19 L59 12 55 28 Q61 37 56 49 Q51 61 36 61 Q21 61 16 49 Q11 37 17 25Z"/>
+        <path class="owl-detail owl-brow" d="M23 29 Q29 24 34 29 M39 29 Q45 24 50 29"/>
+        <g class="normal-eyes"><circle class="owl-eye" cx="28.5" cy="34" r="7"/><circle class="owl-eye" cx="43.5" cy="34" r="7"/><circle class="owl-pupil" cx="30" cy="34" r="2.3"/><circle class="owl-pupil" cx="42" cy="34" r="2.3"/></g>
+        <g class="happy-eyes"><path class="owl-detail" d="M22 35 Q28 28 34 35 M38 35 Q44 28 50 35"/><path class="owl-detail" d="M24 27 Q28 24 32 27 M40 27 Q44 24 48 27"/></g>
+        <g class="sleep-eyes"><path class="owl-detail" d="M22 35 Q28 40 34 35"/><path class="owl-eye" d="M38 35 Q44 31 50 35 Q44 39 38 35Z"/><circle class="owl-pupil" cx="44" cy="35" r="1.8"/><path class="owl-detail" d="M24 29 28 27 M41 27 45 29"/></g>
+        <path class="owl-line" d="M32 41 36 46 40 41Z"/>
+        <path class="owl-detail" d="M22 47 Q28 44 32 48 M40 48 Q44 44 50 47"/>
+        <g class="coffee-prop"><path class="prop-detail" d="M49 43 Q47 40 50 38 M54 43 Q52 40 55 38"/><path class="prop-line" d="M46 47 H57 V56 Q57 59 54 59 H49 Q46 59 46 56Z"/><path class="prop-detail" d="M57 49 H59 Q63 49 61 53 Q60 55 57 54 M48 50 H55"/><path class="prop-detail" d="M48 61 H59"/></g>
+        <g class="laptop-prop"><path class="prop-line" d="M21 49 Q21 47 23 47 H49 Q51 47 51 49 V57 H21Z"/><path class="prop-detail" d="M18 59 21 57 H51 L54 59 Q53 61 51 61 H21 Q19 61 18 59Z M25 50 H47 M25 53 H35"/></g>
+        <g class="evening-book"><path class="owl-book" d="M18 48 Q27 45 35 51 L35 63 Q27 57 18 60Z M37 51 Q45 45 54 48 L54 60 Q45 57 37 63Z"/>
+        <path class="owl-detail" d="M36 52 36 63 M23 52 Q28 51 31 54 M42 54 Q46 51 50 52"/></g>
+        <g class="cozy-props"><path class="owl-detail" d="M54 17 Q59 12 62 17 Q62 22 56 23 M55 19 61 16"/></g>
+        <g class="sleep-z" fill="var(--accent)" font-family="Georgia,serif" font-weight="bold"><text x="51" y="15" font-size="10">z</text><text x="58" y="9" font-size="7">z</text><text x="63" y="5" font-size="5">z</text></g>
+      </svg>
+      <h1 id="greeting">Good day!</h1>
+    </div>
+  </header>
   <section class="cards" aria-label="Live clock and weather">
     <article class="card" aria-label="Live time">
       <p class="card-label">Local time</p>
@@ -144,6 +199,11 @@ function updateClock(){
   const hour=Number(new Intl.DateTimeFormat("en-US",{hour:"2-digit",hourCycle:"h23",timeZone:currentTimeZone}).format(now));
   let greeting=hour>=5&&hour<12?"Good Morning":hour>=12&&hour<17?"Good Afternoon":hour>=17&&hour<21?"Good Evening":"Good Night";
   $("greeting").textContent=config.name?`${greeting}, ${config.name}.`:`${greeting}.`;
+  const welcome=$("welcome");
+  welcome.classList.remove("mood-morning","mood-afternoon","mood-evening","mood-night");
+  welcome.classList.add(hour>=5&&hour<12?"mood-morning":hour>=12&&hour<17?"mood-afternoon":hour>=17&&hour<21?"mood-evening":"mood-night");
+  const moodLabel=hour>=5&&hour<12?"excited morning owl":hour>=12&&hour<17?"studious active owl":hour>=17&&hour<21?"cozy evening owl":"sleepy night owl";
+  $("owlArt").setAttribute("aria-label",moodLabel);
   $("clock").textContent=new Intl.DateTimeFormat(config.locale,{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:config.format==="12",timeZone:currentTimeZone}).format(now);
   const parts=new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23",timeZone:currentTimeZone}).formatToParts(now);
   const part=type=>Number(parts.find(p=>p.type===type)?.value||0);
