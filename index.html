@@ -81,22 +81,45 @@ function readQuery(){
   if(!["en-IN","en-US","en-GB"].includes(config.locale)) config.locale="en-IN";
 }
 function applyTheme(){
-  const root=document.documentElement;
-  root.style.setProperty("--page",config.page);root.style.setProperty("--card",config.card);
-  root.style.setProperty("--accent",config.accent);root.style.setProperty("--accent2",config.accent2);
-  root.style.setProperty("--ink",config.ink);root.style.setProperty("--muted",config.muted);
-  document.body.style.color=config.ink;
+  
+function applyTheme(){
+  const root = document.documentElement;
+
+  let pageBackground = "transparent";
+
+  if(config.pageMode === "white") {
+    pageBackground = "#ffffff";
+  } else if(config.pageMode === "black") {
+    pageBackground = "#000000";
+  } else if(config.pageMode === "custom") {
+    pageBackground = config.page;
+  }
+
+  root.style.setProperty("--page", pageBackground);
+  root.style.setProperty("--card", config.card);
+  root.style.setProperty("--accent", config.accent);
+  root.style.setProperty("--accent2", config.accent2);
+  root.style.setProperty("--ink", config.ink);
+  root.style.setProperty("--muted", config.muted);
+
+  document.body.style.background = pageBackground;
+  document.body.style.color = config.ink;
 }
+  
 function fillForm(){
   $("nameInput").value=config.name;$("cityInput").value=config.city;
-  $("localeInput").value=config.locale;$("formatInput").value=config.format;
-  for(const key of allowedColors) $(key+"Input").value=config[key];
+  
+$("localeInput").value=config.locale;$("formatInput").value=config.format;
+$("pageModeInput").value=config.pageMode;
+for(const key of allowedColors) $(key+"Input").value=config[key];
 }
 function getForm(){
   config.name=$("nameInput").value.trim().slice(0,40);
   config.city=$("cityInput").value.trim().slice(0,80);
-  config.locale=$("localeInput").value;config.format=$("formatInput").value;
-  for(const key of allowedColors) config[key]=safeColor($(key+"Input").value,defaults[key]);
+  
+config.locale=$("localeInput").value;config.format=$("formatInput").value;
+config.pageMode=$("pageModeInput").value;
+for(const key of allowedColors) config[key]=safeColor($(key+"Input").value,defaults[key]);
 }
 function updateClock(){
   const now=new Date();
