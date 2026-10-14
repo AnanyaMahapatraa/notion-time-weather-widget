@@ -110,7 +110,7 @@ function updateClock(){
   $("weekday").textContent=new Intl.DateTimeFormat(config.locale,{weekday:"long",timeZone:currentTimeZone}).format(now);
 }
 function applyConfig(){
-  applyTheme();updateClock();$("weatherLocation").textContent=config.city||"Set a city in Customize";
+  applyTheme();updateClock();$("weatherLocation").textContent=config.city||"Your weather, wherever you are.";
 }
 async function updateWeather(){
   if(!config.city){$("conditions").textContent="Open Customize and enter a city to show local weather.";$("weatherExtra").textContent="";return;}
