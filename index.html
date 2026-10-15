@@ -32,7 +32,10 @@ body{
 .welcome{text-align:center;padding:12px 12px 26px;display:flex;flex-direction:column;align-items:center}
 .eyebrow{margin:0 0 14px;color:var(--muted);font-size:clamp(1rem,2.6vw,1.16rem);letter-spacing:.035em;text-transform:none;font-weight:550}
 .greeting-line{display:flex;align-items:center;justify-content:center;gap:11px;max-width:100%}
-.owl-art{width:clamp(48px,8vw,66px);height:clamp(48px,8vw,66px);flex:0 0 auto;color:var(--accent);overflow:visible}
+.owl-art{width:clamp(48px,8vw,66px);height:clamp(48px,8vw,66px);flex:0 0 auto;color:var(--accent);overflow:visible;cursor:pointer;transition:transform .2s ease}
+.owl-art:hover{transform:scale(1.06)}
+.owl-art:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:8px}
+@media(prefers-reduced-motion:reduce){.owl-art{transition:none}}
 .owl-art .owl-line{fill:var(--card);stroke:var(--accent);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .owl-art .owl-detail{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .owl-art .owl-eye{fill:var(--card);stroke:var(--ink);stroke-width:1.8}
@@ -55,11 +58,7 @@ body{
 @media(prefers-reduced-motion:reduce){.owl-art .sleep-z{animation:none}}
 .greeting-line h1{font-size:clamp(1.9rem,5.5vw,3.35rem)}
 @media(prefers-reduced-motion:reduce){.leaf{animation:none;display:none}}
-.toolbar{display:flex;justify-content:center;margin:0 0 8px}
-.settings-toggle,.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 13px;cursor:pointer;font:inherit;font-size:.85rem}
-.settings-toggle{width:38px;height:38px;padding:0;display:grid;place-items:center;background:#fffaf0;border-color:#eadcc6;color:#80644b;font-size:1.15rem;line-height:1;box-shadow:0 3px 10px rgba(117,68,45,.06)}
-.settings-toggle:hover{background:#f7eddb}
-.settings-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 13px;cursor:pointer;font:inherit;font-size:.85rem}
 .settings{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
 .settings.open{display:block}
 .settings h2{font-size:1rem;margin:0 0 12px}
@@ -89,7 +88,6 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
 <body>
 <div class="leaf-layer" aria-hidden="true"><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span></div>
 <main class="dashboard">
-  <div class="toolbar"><button class="settings-toggle" id="toggleSettings" type="button" aria-label="Open widget settings" title="Widget settings">⚙</button></div>
   <section class="settings" id="settings" aria-label="Widget customization">
     <h2>Customize your widget</h2>
     <div class="fields">
@@ -115,7 +113,7 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
   <header class="welcome" id="welcome">
     <p class="eyebrow" id="today">Loading today's date…</p>
     <div class="greeting-line">
-      <svg class="owl-art" id="owlArt" viewBox="0 0 72 72" role="img" aria-label="A little bookish owl">
+      <svg class="owl-art" id="owlArt" viewBox="0 0 72 72" role="button" tabindex="0" aria-label="Open widget customization" aria-controls="settings" aria-expanded="false" title="Customize widget">
         <path class="owl-line" d="M17 25 13 12 27 19 Q36 14 45 19 L59 12 55 28 Q61 37 56 49 Q51 61 36 61 Q21 61 16 49 Q11 37 17 25Z"/>
         <path class="owl-detail owl-brow" d="M23 29 Q29 24 34 29 M39 29 Q45 24 50 29"/>
         <g class="normal-eyes"><circle class="owl-eye" cx="28.5" cy="34" r="7"/><circle class="owl-eye" cx="43.5" cy="34" r="7"/><circle class="owl-pupil" cx="30" cy="34" r="2.3"/><circle class="owl-pupil" cx="42" cy="34" r="2.3"/></g>
@@ -212,7 +210,7 @@ function updateClock(){
   welcome.classList.remove("mood-morning","mood-afternoon","mood-evening","mood-night");
   welcome.classList.add(hour>=5&&hour<12?"mood-morning":hour>=12&&hour<17?"mood-afternoon":hour>=17&&hour<21?"mood-evening":"mood-night");
   const moodLabel=hour>=5&&hour<12?"excited morning owl":hour>=12&&hour<17?"studious active owl":hour>=17&&hour<21?"cozy evening owl":"sleepy night owl";
-  $("owlArt").setAttribute("aria-label",moodLabel);
+  $("owlArt").setAttribute("data-mood",moodLabel);
   $("clock").textContent=new Intl.DateTimeFormat(config.locale,{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:config.format==="12",timeZone:currentTimeZone}).format(now);
   const parts=new Intl.DateTimeFormat("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23",timeZone:currentTimeZone}).formatToParts(now);
   const part=type=>Number(parts.find(p=>p.type===type)?.value||0);
@@ -291,7 +289,22 @@ async function updateWeather(){
   }
 }
 
-$("toggleSettings").addEventListener("click",()=>$("settings").classList.toggle("open"));
+function toggleSettings() {
+  const settings = $("settings");
+  const owl = $("owlArt");
+  const isOpen = settings.classList.toggle("open");
+  owl.setAttribute("aria-expanded", String(isOpen));
+  owl.setAttribute("aria-label", isOpen ? "Close widget customization" : "Open widget customization");
+  owl.setAttribute("title", isOpen ? "Close customization" : "Customize widget");
+}
+
+$("owlArt").addEventListener("click", toggleSettings);
+$("owlArt").addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    toggleSettings();
+  }
+});
 $("pageModeInput").addEventListener("change",syncBackgroundColorField);
 
 $("applyBtn").addEventListener("click",()=>{
