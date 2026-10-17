@@ -3,22 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f7eee7">
+<meta name="theme-color" content="#1a1612">
 <title>Personal Clock &amp; Weather Widget</title>
 <style>
-:root{--page:transparent;--card:#fffaf6;--accent:#b85f3f;--accent2:#c56b43;--ink:#633f32;--muted:#98776a;--line:#ead8cd;--shadow:0 14px 38px rgba(117,68,45,.07)}
+:root{--page:#1a1612;--card:#fffaf6;--accent:#b85f3f;--accent2:#c56b43;--ink:#633f32;--muted:#98776a;--line:#ead8cd;--shadow:0 14px 38px rgba(0,0,0,.18)}
 *{box-sizing:border-box}
+html{height:100%}
 body{
   margin:0;
   min-height:100vh;
-  padding:10px 16px 22px;
+  min-height:100dvh;
+  padding:12px 6px;
   display:grid;
-  place-items:start center;
+  place-items:center;
   background:var(--page);
   color:var(--ink);
   font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
-  .dashboard{width:min(100%,760px);position:relative;z-index:1}
+.dashboard{width:100%;position:relative;z-index:1}
 /* Gentle seasonal leaves drifting behind the dashboard */
 .leaf-layer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;opacity:.62}
 .leaf{position:absolute;top:-40px;width:13px;height:20px;border-radius:100% 0 100% 0;background:#c78a62;opacity:0;animation:leaf-fall linear infinite;filter:drop-shadow(0 1px 1px rgba(99,63,50,.08))}
@@ -29,7 +31,7 @@ body{
 .leaf:nth-child(5){left:78%;animation-duration:18s;animation-delay:-11s;background:#bf8056;transform:scale(.9)}
 .leaf:nth-child(6){left:92%;animation-duration:22s;animation-delay:-2s;background:#d9ad7b;transform:scale(.6)}
 @keyframes leaf-fall{0%{opacity:0;translate:0 -3vh;rotate:0deg}8%{opacity:.58}50%{translate:34px 52vh;rotate:180deg}92%{opacity:.45}100%{translate:-22px 110vh;rotate:340deg;opacity:0}}
-.welcome{text-align:center;padding:12px 12px 26px;display:flex;flex-direction:column;align-items:center}
+.welcome{text-align:center;padding:4px 12px 20px;display:flex;flex-direction:column;align-items:center}
 .eyebrow{margin:0 0 14px;color:var(--muted);font-size:clamp(1rem,2.6vw,1.16rem);letter-spacing:.035em;text-transform:none;font-weight:550}
 .greeting-line{display:flex;align-items:center;justify-content:center;gap:11px;max-width:100%}
 .owl-art{width:clamp(48px,8vw,66px);height:clamp(48px,8vw,66px);flex:0 0 auto;color:var(--accent);overflow:visible;cursor:pointer;transition:transform .2s ease}
@@ -70,7 +72,7 @@ input[type=color]{height:39px;padding:4px}
 .btn.primary{background:var(--accent);color:white;border-color:var(--accent)}
 .help{font-size:.75rem;color:var(--muted);line-height:1.45;margin:10px 0 0;overflow-wrap:anywhere}
 h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.1rem,6vw,3.5rem);font-weight:500;letter-spacing:-.04em;line-height:1.15}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%}
 .card{min-height:178px;padding:22px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
 .card-label{margin:0;color:var(--muted);font-size:.7rem;letter-spacing:.13em;text-transform:uppercase}
 .icon{margin:14px 0 8px;font-size:1.45rem}
@@ -82,7 +84,7 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
 .location-note{display:none}
 .value{margin:0;color:var(--accent2);font-size:clamp(1.65rem,4vw,2.35rem);font-weight:650;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .detail{margin:8px 0 0;color:var(--muted);font-size:.84rem}
-@media(max-width:480px){.cards,.fields{grid-template-columns:1fr}.card{min-height:155px}.welcome{padding-top:8px}}
+@media(max-width:480px){.cards,.fields{grid-template-columns:1fr}.card{min-height:155px}.welcome{padding-top:4px}}
 </style>
 </head>
 <body>
@@ -96,7 +98,7 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
       <label class="field">Greeting language<select id="localeInput"><option value="en-IN">English (India)</option><option value="en-US">English (US)</option><option value="en-GB">English (UK)</option></select></label>
       <label class="field">Time format<select id="formatInput"><option value="12">12-hour (AM/PM)</option><option value="24">24-hour</option></select></label>
       <label class="field">Background style<select id="pageModeInput"><option value="transparent">Transparent</option><option value="white">White</option><option value="black">Black</option><option value="custom">Custom colour</option></select></label>
-      <label class="field" id="pageColorField">Background colour<input id="pageInput" type="color" value="#f7eee7"></label>
+      <label class="field" id="pageColorField">Background colour<input id="pageInput" type="color" value="#1a1612"></label>
       <label class="field">Card colour<input id="cardInput" type="color" value="#fffaf6"></label>
       <label class="field">Main accent colour<input id="accentInput" type="color" value="#b85f3f"></label>
       <label class="field">Clock/temperature colour<input id="accent2Input" type="color" value="#c56b43"></label>
@@ -147,7 +149,7 @@ h1{margin:0;color:var(--accent);font-family:Georgia,"Times New Roman",serif;font
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
-const defaults = {name:"",city:"",locale:"en-IN",format:"12",page:"#f7eee7",pageMode:"transparent",card:"#fffaf6",accent:"#b85f3f",accent2:"#c56b43",ink:"#633f32",muted:"#98776a"};
+const defaults = {name:"",city:"",locale:"en-IN",format:"12",page:"#1a1612",pageMode:"custom",card:"#fffaf6",accent:"#b85f3f",accent2:"#c56b43",ink:"#633f32",muted:"#98776a"};
 let config = {...defaults};
 let currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 let weatherCoordinates = null;
